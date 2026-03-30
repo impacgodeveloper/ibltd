@@ -59,10 +59,7 @@ const StripeSetupForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isSetup && !consent) {
-      setError("You must consent to save your card for future payments");
-      return;
-    }
+   
 
     if (!stripe || !elements) return;
 
@@ -176,11 +173,11 @@ const StripeSetupForm = ({
           </div>
 
           <div className="stripe-modal-actions">
-            <button
-              type="submit"
-              disabled={!stripe || submitting || setupProcessing || (isSetup && !consent)}
-              className="stripe-confirm-btn"
-            >
+           <button
+  type="submit"
+  disabled={!stripe || submitting || setupProcessing}
+  className="stripe-confirm-btn"
+>
               {submitting ? (
                 <>
                   <div className="stripe-loading-spinner"></div>
@@ -264,7 +261,7 @@ export default function Checkout() {
   });
 
   // Payment option
-  const [saveCardOption, setSaveCardOption] = useState(false);
+  const [saveCardOption, setSaveCardOption] = useState(true);
   const [selectedCard, setSelectedCard] = useState(null);
 
   // Time slots state
@@ -1124,7 +1121,7 @@ export default function Checkout() {
         setCustomerId(data.customerId || customerId);
         setShowPaymentSetup(true);
       } else {
-        const data = await createPaymentIntent(token, total * 100); // amount in cents
+        const data = await createPaymentIntent(token, total ); // amount in cents
         if (!data?.clientSecret) throw new Error("Payment intent failed");
         setPaymentClientSecret(data.clientSecret);
         setShowPaymentSetup(true);
@@ -2521,7 +2518,7 @@ export default function Checkout() {
               </>
             ) : (
               <>
-                <label className="qb-save-toggle-row">
+                {/* <label className="qb-save-toggle-row">
   <div className="qb-save-toggle-icon">
     <i className="fas fa-lock" />
   </div>
@@ -2542,7 +2539,7 @@ export default function Checkout() {
     />
     <span className="qb-switch-slider" />
   </label>
-</label>
+</label> */}
                 <button
                   className="qb-btn-primary lg"
                   onClick={() => handleConfirmBooking()}
